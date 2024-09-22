@@ -19,8 +19,7 @@ $ pip install -r requirements.txt
 # Usage
 ```bash
 $ ./print.py --help
-usage: print.py [-h] [--log-level {debug,info,warn,error}] [--img-binarization-algo {mean-threshold,floyd-steinberg,halftone}]
-                [--show-preview] [--devicename DEVICENAME] [--darker]
+usage: print.py [-h] [-l {debug,info,warn,error}] [-b {mean-threshold,floyd-steinberg,atkinson,halftone,none}] [-s] [-d DEVICE] [-e ENERGY]
                 filename
 
 prints an image on your cat thermal printer
@@ -30,15 +29,17 @@ positional arguments:
 
 options:
   -h, --help            show this help message and exit
-  --log-level {debug,info,warn,error}
-  --img-binarization-algo {mean-threshold,floyd-steinberg,halftone}
-                        Which image binarization algorithm to use.
-  --show-preview        If set, displays the final image and asks the user for confirmation before printing.
-  --devicename DEVICENAME
-                        Specify the Bluetooth Low Energy (BLE) device name to search for. If not specified, the script will try to
-                        auto discover the printer based on its advertised BLE service UUIDs. Common names are similar to "GT01",
-                        "GB02", "GB03".
-  --darker              Print the image in text mode. This leads to more contrast, but slower speed.
+  -l {debug,info,warn,error}, --log-level {debug,info,warn,error}
+  -b {mean-threshold,floyd-steinberg,atkinson,halftone,none}, --img-binarization-algo {mean-threshold,floyd-steinberg,atkinson,halftone,none}
+                        Which image binarization algorithm to use. If 'none' is used, no binarization will be used. In this case the image has to
+                        have a width of 384 px.
+  -s, --show-preview    If set, displays the final image and asks the user for confirmation before printing.
+  -d DEVICE, --device DEVICE
+                        The printer's Bluetooth Low Energy (BLE) address (MAC address on Linux; UUID on macOS) or advertisement name (e.g.:
+                        "GT01", "GB02", "GB03"). If omitted, the the script will try to auto discover the printer based on its advertised BLE
+                        services.
+  -e ENERGY, --energy ENERGY
+                        Thermal energy. Between 0x0000 (light) and 0xffff (darker, default).
 ```
 
 # Example
@@ -61,11 +62,23 @@ options:
 
 # Different Algorithms
 
-Mean Threshold:
-![Mean threshold](./media/grumpy_mean_threshold.png)
+**Mean Threshold:**
 
-Floyd Steinberg (default)
-![Floyd Steinberg](./media/grumpy_floydsteinberg.png)
+![Mean threshold](./media/grumpymeanthreshold.png)
 
-Halftone dithering
-![Halftone](./media/grumpy_halftone.png)
+
+**Floyd Steinberg (default):**
+
+![Floyd Steinberg](./media/grumpyfloydsteinbergexample.png)
+
+**Atkinson:**
+
+![Atkinson](./media/grumpyatkinsonexample.png)
+
+**Halftone dithering:**
+
+![Halftone](./media/grumpyhalftone.png)
+
+**None (image must be 384px wide):**
+
+![None](./media/grumpynone.png)
